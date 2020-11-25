@@ -71,12 +71,9 @@ class Functions{
 			}
 		}
 		return unlink('upload/'.$data_edit[$fieldName]);
-		
-
 	}
 
 
 }
-
 
 ?>

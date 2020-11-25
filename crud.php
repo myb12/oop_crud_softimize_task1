@@ -16,10 +16,10 @@ if (isset($_GET['action']) && $_GET['action']=="DEL" )
 	if($deleteImage == true){
 
 		$msg = $func -> delete($get_id, $table_name);
-		header("Location: index.php");
+		header("Location: home.php");
 	}else{
 		$msg = $func -> delete($get_id, $table_name);
-		header("Location: index.php");
+		header("Location: home.php");
 	}
 
 
@@ -140,13 +140,13 @@ if (isset($_POST['submit'])){
 			$query="INSERT INTO vehicles(name,image,engine,cylinder,displacement,transmission,power,torque,fuel_capacity,braking_system) VALUES ('$name' ,'$fileNameNew','$engine','$cylinder', '$displacement', '$transmission','$power','$torque','$fuel_capacity','$braking_system' )";
 
 			$msg = $func -> insert($query);
-			header("Location: index.php");
+			header("Location: home.php");
 
 		}
 		
 
 	}else{
-		//var_dump($_POST);die;
+
 		if(!empty($_FILES['file']['name'])){
 			$file=$_FILES['file'];
 			$fileName= $_FILES['file']['name'];
@@ -161,6 +161,9 @@ if (isset($_POST['submit'])){
 
 			$allowed = array('jpg','jpeg','png','pdf');
 
+			
+				
+			
 			if (in_array($fileActualExt,$allowed)) {
 
 				if ($fileError === 0) {
@@ -187,7 +190,11 @@ if (isset($_POST['submit'])){
 				echo 'You cannot upload files of this type!';
 			}
 
+		}else{
+			$fileNameNew = $_POST['old-image'];
+		 }
 		}
+
 
 		$id=$_POST['id'];
 		if (!empty($_POST['name'])){
@@ -243,7 +250,7 @@ if (isset($_POST['submit'])){
 			$query="UPDATE $table_name SET name='$name', image='$fileNameNew', engine='$engine' , cylinder='$cylinder', displacement='$displacement', transmission = '$transmission', power='$power', torque='$torque', fuel_capacity='$fuel_capacity', braking_system='$braking_system' WHERE id='$id'";
 			//var_dump($query);die;
 			$msg = $func -> update($query);
-			header("Location: index.php");
+			header("Location: home.php");
 
 			//var_dump($msg);die;
 			//var_dump($_POST);die;
@@ -251,12 +258,10 @@ if (isset($_POST['submit'])){
 
 
 
-		}
+		
 
 
 	}
 }
-
-//include_once 'index_view.php';
 
 ?>

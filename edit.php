@@ -1,5 +1,11 @@
 <?php
 include_once 'crud.php';
+include_once 'utilities.php';
+session_start();
+if(!is_logged_in())
+{
+	header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +22,22 @@ include_once 'crud.php';
 	</style>
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script>
+		function previewFile(input){
+			var file = $("input[type=file]").get(0).files[0];
+
+			if(file){
+				var reader = new FileReader();
+
+				reader.onload = function(){
+					$("#previewImg").attr("src", reader.result);
+				}
+
+				reader.readAsDataURL(file);
+			}
+		}
+	</script>
 
 </head>
 <body>
@@ -29,7 +51,7 @@ include_once 'crud.php';
 
 		<div class="row">
 			<div class="column column-60 column-offset-20">
-				<form method="post" enctype="multipart/form-data" action="index.php"  > 
+				<form method="post" enctype="multipart/form-data" action="home.php"  > 
 
 					<input type="hidden" name="id" value="<?php echo isset($data_edit['id'])?$data_edit['id']:""; ?>" >
 
@@ -77,14 +99,19 @@ include_once 'crud.php';
 						<option value="ABS" <?php  if($data_edit['braking_system']=='ABS') echo "selected"; ?>>ABS</option>
 						<option value="EBD" <?php  if($data_edit['braking_system']=='EBD') echo "selected"; ?>>EBD</option>
 					</select>
-
-
 					<div>
 						<form action="" method="POST" enctype="multipart/form-data">
 							<label for="">Upload Your Photo</label>
-							<p><input type="file" name="file" value="<?php echo isset($upload_error)? $upload_error : "";?>"></p>
-						</form>	
-
+							<p><input type="file" name="file" value="<?php echo isset($upload_error)? $upload_error : "";?>" onchange="previewFile(this);"></p>
+						</p>
+						<img id="previewImg" src="">
+						<p>
+							<input type="hidden" name="old-image" value="<?php echo isset($data_edit['image'])?$data_edit['image']:""; ?>">
+						</form>
+						<div > 
+							<label for="">Old Image</label>
+							<img src="upload/<?php echo isset($data_edit['image'])?$data_edit['image']:""; ?>" alt="" height="100px" width="100px" a>
+						</div>
 						<button class="button" type="submit" name="submit">Submit</button>
 					</div>
 
